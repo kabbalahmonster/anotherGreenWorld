@@ -13,6 +13,7 @@ class Player extends Entity{
    constructor(scene, x, y, key){
       super(scene, x, y, key, "Player");
       this.setData("speed", 160);
+      this.setData("lifePoints", 100);
    }
    create(){
    }
@@ -34,13 +35,20 @@ class Player extends Entity{
       this.body.velocity.x = this.getData('speed');
       this.play('right', true);
    }
+   decreaseLife(){
+      this.setData('lifePoints', this.points() - 1);
+   }
+   points(){
+      return this.getData('lifePoints');
+   }
 
 }
 
 class Robot extends Entity{
    constructor(scene, x, y, key){
       super(scene, x, y, key, "Robot");
-      this.setData("speed", 60);
+      //Set a random speed for the robot
+      this.setData("speed", Phaser.Math.Between(40, 80));
       this.body.setBounce(0);
          // robot.setBounce(0);
          // robot.setCollideWorldBounds(true);

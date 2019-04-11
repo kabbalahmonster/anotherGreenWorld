@@ -17,6 +17,7 @@ class SceneStart extends Phaser.Scene{
    create(){
       this.add.image(400, 300, 'sky');
       this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+      this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
       this.player = new Player(this, 200, 450, 'dude');
@@ -41,14 +42,13 @@ class SceneStart extends Phaser.Scene{
          callbackScope: this,
          loop: true
       });
-      // this.physics.add.overlap(this.player, this.robots, this.robotContact, null, this);
    }
 
    robotLoop(){
       if(this.robots.getChildren().length < 8){
          let positions = [30, config.width - 30];
          let x = Phaser.Utils.Array.GetRandom(positions);
-         let robot = new Robot(this, x, 500, 'bomb');
+         let robot = new Robot(this, x, 500, 'robot');
          this.robots.add(robot);
       }
    }
@@ -69,57 +69,26 @@ class SceneStart extends Phaser.Scene{
          var robot = this.robots.getChildren()[i];
          robot.update();
       }
+
       
    }
 
-   getEnemiesByType(type) {
-      var arr = [];
-      for(var i =0; i< this.enemies.getChildren().length; i ++){
-         var enemy = this.enemies.getChildren()[i];
-         if(enemy.getData('type') == type) {
-            arr.push(enemy);
-         }
-      }
-      return arr;
-   }
-
-   //Detect if the object is out of sight and destroys it if so
-   frustumCullObject(object) {
-      if(object.x < -object.displayWidth || 
-         object.x > this.game.config.width + object.displayWidth ||
-         object.y < -object.displayHeight * 4 ||
-         object.y > this.game.config.height + object.displayHeight
-      ) {
-         if(object) {
-            if(object.onDestroy !== undefined) {
-               object.onDestroy();
-            }
-            object.destroy();
-         } 
-
-      }
-   }
-
    playerRobotCollision(player, robot){
-      // this.physics.pause();
-      robot.setTint(0xff0000);
-      player.anims.play('turn');
-      // gameOver = true;
-   }
-
-   robotContact(player, start) {
-      start.disableBody(true, true);
-      score += 10;
-      scoreText.setText('score: ' + score);
-      if(robots.countActive(true) == 0) {
-         robots.children.iterate(function(child) {
-            child.enableBody(true, child.x, 0, true, true);
-         });
-         var x = (player.x < 400)? Phaser.Math.Between(400, 800): Phaser.Math.Between(0, 400);
-         var bomb = robots.create(x, 16, 'bomb');
-         bomb.setBounce(1);
-         bomb.setCollideWorldBounds(true);
-         bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      let playerY = Math.ceil(player.y + player.height/2);
+      let robotY = Math.ceil(robot.y - robot.height/2);
+      if(playerY <= robotY){
+         //The player is over the robot
+         robot.destroy();
+      } else {
+         //Decrease player life points
+         player.anims.play('turn');
+         player.setTint(0xff0000);
+         player.decreaseLife();
+         this.lifeText.setText('life:' + this.player.points());
+         if(this.player.points()<=0){
+            this.physics.pause();
+         }
+         // gameOver = true;
       }
    }
 
