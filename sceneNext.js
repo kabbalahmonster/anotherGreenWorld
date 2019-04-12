@@ -16,7 +16,6 @@ class SceneNext extends Phaser.Scene{
          'assets/esmeralda5.png', 
          {frameWidth: 106, frameHeight: 150}
       );      
-      this.load.audio('track1', 'assets/track1.ogg');
       goal = 10;
       flowerInc = 800 / (goal);
       flowerSpawn = 0;
