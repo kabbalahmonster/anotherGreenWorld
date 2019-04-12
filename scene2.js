@@ -2,12 +2,12 @@ class SceneTwo extends Phaser.Scene{
 
    constructor() {
       super({key: 'SceneTwo'});
-      this.robotTarget = 12;
+      this.robotTarget = 16;
       this.robotSpeed = {min: 120, max: 160};
    }
    
    preload() {
-      // this.load.image('bgstage2', 'assets/greenWorldBG1.png');
+      this.load.image('stage2bg', 'assets/stage2bg.png');
       
       this.load.audio('stomp', 'assets/stomp.ogg');
       flowerInc = 800 / (this.robotTarget);
@@ -15,7 +15,7 @@ class SceneTwo extends Phaser.Scene{
    }
 
    create(){
-      this.add.image(config.width/2, config.height/2, 'stage1bg');
+      this.add.image(config.width/2, config.height/2, 'stage2bg');
       this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
@@ -31,10 +31,6 @@ class SceneTwo extends Phaser.Scene{
       backTrack= this.sound.add('track2',{loop:true, detune: -500});
       backTrack.play();
       
-
-      // this.player = this.physics.add.sprite(100, 450, 'dude');
-      // this.player.setBounce(0.1);
-      // this.player.setCollideWorldBounds(true);
       this.physics.add.collider(this.player, this.platforms);
       
       //attach keyboard listeners
@@ -132,11 +128,11 @@ class SceneTwo extends Phaser.Scene{
       // all robots were killed go the next level
       if(this.player.kills()>=this.robotTarget){
          backTrack.stop();
-         this.physics.pause();
          this.time.addEvent({
-            delay: 100,
+            delay: 1000,
             callback: function() {
                this.scene.start('SceneGameWin');
+               this.physics.pause();
             },
             callbackScope: this,
             loop: false
