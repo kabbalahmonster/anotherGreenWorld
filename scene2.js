@@ -13,13 +13,12 @@ class SceneTwo extends Phaser.Scene{
    }
 
    create(){
-      this.add.image(400, 300, 'bgstage1');
+      this.add.image(config.width/2, config.height/2, 'stage1bg');
       this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
-      this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-      //this.platforms.create(50, 250, 'ground');
+      this.platforms.create(config.width/2, config.height-20, 'invisible')
+         .setScale(config.width*2, 100).refreshBody();
 
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
