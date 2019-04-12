@@ -1,8 +1,10 @@
 class SceneStart extends Phaser.Scene{
 
+   
    constructor() {
       super({key: 'SceneStart'});
-   }
+   }   
+
    
    preload() {
       this.load.image('sky', 'assets/sky.png');
@@ -16,9 +18,10 @@ class SceneStart extends Phaser.Scene{
          'assets/esmeralda5.png', 
          {frameWidth: 106, frameHeight: 150}
       );
+      goal = 5;
+      flowerInc = 800 / (goal);
+      flowerSpawn = 0;
    }
-   
-
    create(){
       this.add.image(400, 300, 'sky');
       this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
@@ -27,8 +30,10 @@ class SceneStart extends Phaser.Scene{
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
       this.player = new Player(this, 200, 250, 'dude');
       this.player.body.collideWorldBounds=true;
+      
+      //let flower = new Flower(this,200,250,'flower');
 
-      // this.player = this.physics.add.sprite(100, 450, 'dude');
+
       // this.player.setBounce(0.1);
       // this.player.setCollideWorldBounds(true);
       this.physics.add.collider(this.player, this.platforms);
@@ -45,6 +50,9 @@ class SceneStart extends Phaser.Scene{
       //attach keyboard listeners
       this.cursors = this.input.keyboard.createCursorKeys();
       this.robots = this.physics.add.group();
+      this.flowers = this.physics.add.group();
+      
+      this.physics.add.collider(this.flowers, this.platforms);
       this.physics.add.collider(this.player, this.robots, this.playerRobotCollision, null, this);
       this.physics.add.collider(this.robots, this.platforms);
       this.physics.add.collider(this.robots, this.player);
@@ -55,6 +63,7 @@ class SceneStart extends Phaser.Scene{
          loop: true
       });
    }
+   
 
    robotLoop(){
       if(this.robots.getChildren().length < 8){
@@ -88,11 +97,16 @@ class SceneStart extends Phaser.Scene{
    playerRobotCollision(player, robot){
       let playerY = Math.ceil(player.y + player.height/2);
       let robotY = Math.ceil(robot.y - robot.height/2);
+
       if(playerY <= robotY){
          //The player is over the robot
+         flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();         
          player.addKill();         
-         console.log(player.kills());
+         console.log(player.kills());       
+         let flower = new Flower(this,flowerSpawn,300,'flower');
+         this.flowers.add(flower);
+         
       } else {
          //Decrease player life points
          player.anims.play('turn');
@@ -124,7 +138,7 @@ class SceneStart extends Phaser.Scene{
       }
 
       // you win
-      if(this.player.kills()>=5){
+      if(this.player.kills()>=goal){
          this.physics.pause();
          this.time.addEvent({
             delay: 100,
