@@ -26,7 +26,7 @@ class SceneStart extends Phaser.Scene{
    create(){
       this.add.image(400, 300, 'sky');
       this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
-      this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
+      this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
       this.player = new Player(this, 200, 250, 'dude');
