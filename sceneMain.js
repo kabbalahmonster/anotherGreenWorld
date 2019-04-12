@@ -41,9 +41,9 @@ class SceneMain extends Phaser.Scene{
       this.time.addEvent({
          delay: 3000,
          callback: function(){
-            // this.scene.start('SceneOne');
+            this.scene.start('SceneOne');
             // this.scene.start('SceneTwo');
-            this.scene.start('SceneThree');
+            // this.scene.start('SceneThree');
          },
          callbackScope: this 
       });

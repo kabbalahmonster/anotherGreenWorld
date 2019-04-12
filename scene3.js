@@ -24,7 +24,7 @@ class SceneThree extends Phaser.Scene{
       this.add.image(40, 90, 'pond').setScale(0.5);
       this.pondText = this.add.text(90, 70, '3', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
-      this.platforms.create(config.width/2, config.height-20, 'invisible')
+      this.platforms.create(config.width/2, config.height, 'invisible')
          .setScale(config.width*2, 100).refreshBody();
 
       this.player = new Player(this, 200, 250, 'dude');      
@@ -127,6 +127,7 @@ class SceneThree extends Phaser.Scene{
          //Decrease player life points
          player.anims.play('turn');
          //set a red tint
+      this.pondText.setText(this.player.maxNumberOfPonds()-this.ponds.getChildren().length);
          player.setTint(0xff0000);
          //remove the tint after a while
          this.time.addEvent({
