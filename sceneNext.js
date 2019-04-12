@@ -16,6 +16,7 @@ class SceneNext extends Phaser.Scene{
          'assets/esmeralda5.png', 
          {frameWidth: 106, frameHeight: 150}
       );      
+      this.load.audio('track1', 'assets/track1.ogg');
       goal = 10;
       flowerInc = 800 / (goal);
       flowerSpawn = 0;
@@ -32,6 +33,9 @@ class SceneNext extends Phaser.Scene{
 
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
+      
+      backTrack= this.sound.add('track1');
+      backTrack.play();
 
       // this.player = this.physics.add.sprite(100, 450, 'dude');
       // this.player.setBounce(0.1);
