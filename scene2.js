@@ -3,7 +3,7 @@ class SceneTwo extends Phaser.Scene{
    constructor() {
       super({key: 'SceneTwo'});
       this.robotTarget = 12;
-      this.robotSpeed = {min: 80, max: 160};
+      this.robotSpeed = {min: 120, max: 160};
    }
    
    preload() {
@@ -85,7 +85,8 @@ class SceneTwo extends Phaser.Scene{
          robot.destroy();
          player.addKill();
          // spawn flower when rocot killed                  
-         let flower = new Flower(this,flowerSpawn,300,'flower');
+         let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
+         let flower = new Flower(this,flowerSpawn,300,flowerKey).setScale(0.5);
          this.flowers.add(flower);
       } else {
          //Decrease player life points

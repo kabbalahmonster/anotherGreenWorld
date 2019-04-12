@@ -12,8 +12,7 @@ class SceneMain extends Phaser.Scene{
          callback: function(){
             this.scene.start('SceneOne');
          },
-         callbackScope: this,
-         repeat: this.robotTarget - 1
+         callbackScope: this 
       });
    }
 }
