@@ -33,8 +33,8 @@ class SceneNext extends Phaser.Scene{
 
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
-      
-      backTrack= this.sound.add('track1');
+     
+      backTrack= this.sound.add('track1',{loop:true});
       backTrack.play();
 
       // this.player = this.physics.add.sprite(100, 450, 'dude');
@@ -125,6 +125,8 @@ class SceneNext extends Phaser.Scene{
          this.lifeText.setText('life:' + this.player.points());
          // gameOver = true;
          if(this.player.points()<=0){
+            
+            backTrack.stop();
             this.physics.pause();
             this.time.addEvent({
                delay: 100,
@@ -139,6 +141,7 @@ class SceneNext extends Phaser.Scene{
       
          // you win 
          if(this.player.kills()>=goal){
+            backTrack.stop();
             this.physics.pause();
             this.time.addEvent({
                delay: 100,
