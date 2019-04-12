@@ -18,23 +18,24 @@ class Player extends Entity{
    }
    create(){
    }
+   speed(){
+      return this.getData('speed');
+   }
    moveUp(){
-      this.body.velocity.y = -this.getData('speed') * 3;
+      this.body.velocity.y = - this.speed()* 3;
    }
-   moveDown(){
-      this.body.velocity.y = this.getData('speed');
-   }
+   moveDown(){}
    moveLeft(){
-      this.body.velocity.x = -this.getData('speed');
+      this.body.velocity.x = -this.speed();
       this.play('left', true);
+   }
+   moveRight(){
+      this.body.velocity.x = this.speed();
+      this.play('right', true);
    }
    turn(){
       this.body.velocity.x = 0;
       this.play('turn');
-   }
-   moveRight(){
-      this.body.velocity.x = this.getData('speed');
-      this.play('right', true);
    }
    decreaseLife(){
       this.setData('lifePoints', this.points() - 1);

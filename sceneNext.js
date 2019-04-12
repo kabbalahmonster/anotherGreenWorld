@@ -5,20 +5,11 @@ class SceneNext extends Phaser.Scene{
    }
    
    preload() {
-      this.load.image('bg', 'assets/greenWorldBG1.png');
-      this.load.image('ground', 'assets/platform.png');
-      this.load.spritesheet('robot', 
-         'assets/badBot2.png',
-         {frameWidth:90, frameHeight: 144}
-      );
-      this.load.spritesheet('dude',
-         'assets/esmeralda5.png', 
-         {frameWidth: 106, frameHeight: 150}
-      );
+      this.load.image('bgstage2', 'assets/greenWorldBG1.png');
    }
 
    create(){
-      this.add.image(400, 300, 'bg');
+      this.add.image(400, 300, 'bgstage2');
       this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
@@ -91,7 +82,6 @@ class SceneNext extends Phaser.Scene{
          //The player is over the robot
          robot.destroy();
          player.addKill();
-         console.log(player.kills());
       } else {
          //Decrease player life points
          player.anims.play('turn');

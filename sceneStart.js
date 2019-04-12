@@ -5,6 +5,7 @@ class SceneStart extends Phaser.Scene{
    }
    
    preload() {
+      this.load.image('bgstage2', 'assets/greenWorldBG1.png');
       this.load.image('sky', 'assets/sky.png');
       this.load.image('ground', 'assets/platform.png');
       this.load.image('flower', 'assets/star.png');
@@ -92,7 +93,6 @@ class SceneStart extends Phaser.Scene{
          //The player is over the robot
          robot.destroy();         
          player.addKill();         
-         console.log(player.kills());
       } else {
          //Decrease player life points
          player.anims.play('turn');
@@ -125,7 +125,7 @@ class SceneStart extends Phaser.Scene{
 
       // you win
       if(this.player.kills()>=5){
-         this.physics.pause();
+         // this.physics.pause();
          this.time.addEvent({
             delay: 100,
             callback: function() {
