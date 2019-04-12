@@ -1,13 +1,15 @@
-class SceneStart extends Phaser.Scene{
+class SceneOne extends Phaser.Scene{
 
    
    constructor() {
-      super({key: 'SceneStart'});
+      super({key: 'SceneOne'});
+      this.robotTarget = 6;
+      this.robotSpeed = {min: 40, max: 80};
    }   
 
    
    preload() {
-      this.load.image('sky', 'assets/sky.png');
+      this.load.image('bgstage1', 'assets/greenWorldBG1.png');
       this.load.image('ground', 'assets/platform.png');
       this.load.image('flower', 'assets/star.png');
       this.load.spritesheet('robot', 
@@ -20,21 +22,20 @@ class SceneStart extends Phaser.Scene{
       );
       
       this.load.audio('track1', 'assets/track1.ogg');
-      goal = 5;
-      flowerInc = 800 / (goal);
+      
+      flowerInc = 800 / (this.robotTarget);
       flowerSpawn = 0;
    }
    create(){
-      this.add.image(400, 300, 'sky');
+      this.add.image(400, 300, 'bgstage1');
+      this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
       this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
-      this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
       this.player = new Player(this, 200, 250, 'dude');
       this.player.body.collideWorldBounds=true;
       
       //let flower = new Flower(this,200,250,'flower');
-
 
       // this.player.setBounce(0.1);
       // this.player.setCollideWorldBounds(true);
@@ -62,18 +63,17 @@ class SceneStart extends Phaser.Scene{
          delay: 1000,
          callback: this.robotLoop,
          callbackScope: this,
-         loop: true
+         repeat: this.robotTarget - 1
       });
    }
    
 
    robotLoop(){
-      if(this.robots.getChildren().length < 8){
-         let positions = [30, config.width - 30];
-         let x = Phaser.Utils.Array.GetRandom(positions);
-         let robot = new Robot(this, x, 300, 'robot');
-         this.robots.add(robot);
-      }
+      let positions = [30, config.width - 30];
+      let x = Phaser.Utils.Array.GetRandom(positions);
+      let robotSpeed = Phaser.Math.Between(this.robotSpeed.min, this.robotSpeed.max);
+      let robot = new Robot(this, x, 300, 'robot', robotSpeed);
+      this.robots.add(robot);
    }
 
    update() {
@@ -92,8 +92,6 @@ class SceneStart extends Phaser.Scene{
          var robot = this.robots.getChildren()[i];
          robot.update();
       }
-
-      
    }
 
    playerRobotCollision(player, robot){
@@ -105,7 +103,6 @@ class SceneStart extends Phaser.Scene{
          flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();         
          player.addKill();         
-         //console.log(player.kills());  
          // spawn flower when robot killed     
          let flower = new Flower(this,flowerSpawn,300,'flower');
          this.flowers.add(flower);
@@ -140,13 +137,14 @@ class SceneStart extends Phaser.Scene{
          }
       }
 
-      // you win
-      if(this.player.kills()>=goal){
+      this.scoreText.setText('score:' + game.score);
+      // all robots were killed go the next level
+      if(this.player.kills() >= this.robotTarget){
          this.physics.pause();
          this.time.addEvent({
             delay: 100,
             callback: function() {
-               this.scene.start('SceneNext');
+               this.scene.start('SceneTwo');
             },
             callbackScope: this,
             loop: false

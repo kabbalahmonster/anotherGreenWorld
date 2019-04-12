@@ -11,8 +11,8 @@ var config = {
       }
    },
    scene: [
-      SceneStart,
-      SceneNext,
+      SceneOne,
+      SceneTwo,
       SceneGameWin,
       SceneGameOver
    ],
@@ -20,10 +20,9 @@ var config = {
    // roundPixels: true
 };
 var game = new Phaser.Game(config);
-
+game.score = 0;
 let flowerSpawn;
 let flowerInc;
-let goal;
 let flowers;
 let backTrack;
 

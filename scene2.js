@@ -1,30 +1,21 @@
-class SceneNext extends Phaser.Scene{
+class SceneTwo extends Phaser.Scene{
 
    constructor() {
-      super({key: 'SceneNext'});
+      super({key: 'SceneTwo'});
+      this.robotTarget = 12;
+      this.robotSpeed = {min: 80, max: 160};
    }
    
    preload() {
-      this.load.image('bg', 'assets/greenWorldBG1.png');
-      this.load.image('ground', 'assets/platform.png');
-      this.load.image('flower', 'assets/star.png');
-      this.load.spritesheet('robot', 
-         'assets/badBot2.png',
-         {frameWidth:90, frameHeight: 144}
-      );
-      this.load.spritesheet('dude',
-         'assets/esmeralda5.png', 
-         {frameWidth: 106, frameHeight: 150}
-      );      
-      goal = 10;
-      flowerInc = 800 / (goal);
+      // this.load.image('bgstage2', 'assets/greenWorldBG1.png');
+      flowerInc = 800 / (this.robotTarget);
       flowerSpawn = 0;
    }
 
    create(){
-      this.add.image(400, 300, 'bg');
-      this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
-      this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
+      this.add.image(400, 300, 'bgstage1');
+      this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
+      this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
@@ -40,13 +31,6 @@ class SceneNext extends Phaser.Scene{
       // this.player.setBounce(0.1);
       // this.player.setCollideWorldBounds(true);
       this.physics.add.collider(this.player, this.platforms);
-
-      /*
-      //player animations
-      this.anims.create({ key: 'left', frames: this.anims.generateFrameNumbers('dude', [{start: 1, end: 2}]), frameRate: 0.5, repeat: -1 });
-      this.anims.create({ key: 'turn', frames: [{key: 'dude', frame: 3}], frameRate: 2 });
-      this.anims.create({ key: 'right', frames: this.anims.generateFrameNumbers('dude', {start: 4, end: 5}), frameRate: 0.5, repeat: -1 });
-      */
       
       //attach keyboard listeners
       this.cursors = this.input.keyboard.createCursorKeys();
@@ -61,17 +45,16 @@ class SceneNext extends Phaser.Scene{
          delay: 1000,
          callback: this.robotLoop,
          callbackScope: this,
-         loop: true
+         repeat: this.robotTarget - 1
       });
    }
 
    robotLoop(){
-      if(this.robots.getChildren().length < 8){
-         let positions = [30, config.width - 30];
-         let x = Phaser.Utils.Array.GetRandom(positions);
-         let robot = new Robot(this, x, 300, 'robot');
-         this.robots.add(robot);
-      }
+      let positions = [30, config.width - 30];
+      let x = Phaser.Utils.Array.GetRandom(positions);
+      let robotSpeed = Phaser.Math.Between(this.robotSpeed.min, this.robotSpeed.max);
+      let robot = new Robot(this, x, 300, 'robot', robotSpeed);
+      this.robots.add(robot);
    }
 
    update() {
@@ -102,7 +85,6 @@ class SceneNext extends Phaser.Scene{
          flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();
          player.addKill();
-         //console.log(player.kills());   
          // spawn flower when rocot killed                  
          let flower = new Flower(this,flowerSpawn,300,'flower');
          this.flowers.add(flower);
@@ -138,19 +120,21 @@ class SceneNext extends Phaser.Scene{
          }   
       }
       
-         // you win 
-         if(this.player.kills()>=goal){
-            backTrack.stop();
-            this.physics.pause();
-            this.time.addEvent({
-               delay: 100,
-               callback: function() {
-                  this.scene.start('SceneGameWin');
-               },
-               callbackScope: this,
-               loop: false
-            });
-         }
+
+      this.scoreText.setText('score:' + game.score);
+      // all robots were killed go the next level
+      if(this.player.kills()>=this.robotTarget){
+         backTrack.stop();
+         this.physics.pause();
+         this.time.addEvent({
+            delay: 100,
+            callback: function() {
+               this.scene.start('SceneGameWin');
+            },
+            callbackScope: this,
+            loop: false
+         });
+      }
    }
 
 }
