@@ -1,45 +1,43 @@
-class SceneStart extends Phaser.Scene{
+class SceneNext extends Phaser.Scene{
 
    constructor() {
-      super({key: 'SceneStart'});
+      super({key: 'SceneNext'});
    }
    
    preload() {
-      this.load.image('sky', 'assets/sky.png');
+      this.load.image('bg', 'assets/greenWorldBG1.png');
       this.load.image('ground', 'assets/platform.png');
-      this.load.image('flower', 'assets/star.png');
-      this.load.spritesheet('robot', 
-         'assets/badBot2.png',
-         {frameWidth:90, frameHeight: 144}
-      );
+      this.load.image('robot', 'assets/star.png');
+      /*
       this.load.spritesheet('dude',
-         'assets/esmeralda5.png', 
-         {frameWidth: 106, frameHeight: 150}
+         'assets/dude.png', 
+         {frameWidth: 32, frameHeight: 48}
       );
+      */
    }
-   
 
    create(){
-      this.add.image(400, 300, 'sky');
+      this.add.image(400, 300, 'bg');
       this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+      //this.platforms.create(50, 250, 'ground');
+
       this.player = new Player(this, 200, 250, 'dude');
 
       // this.player = this.physics.add.sprite(100, 450, 'dude');
       // this.player.setBounce(0.1);
       // this.player.setCollideWorldBounds(true);
       this.physics.add.collider(this.player, this.platforms);
+
+      /*
       //player animations
-      this.anims.create({ key: 'left', frames: this.anims.generateFrameNumbers('dude', {start: 1, end: 2}), frameRate: 6, repeat: -1 });
-      this.anims.create({ key: 'turn', frames: [{key: 'dude', frame: 3}], frameRate: 20 });
-      this.anims.create({ key: 'right', frames: this.anims.generateFrameNumbers('dude', {start: 4, end: 5}), frameRate: 6, repeat: -1 });
-   
-      //robot animations
-      this.anims.create({ key: 'botLeft', frames: this.anims.generateFrameNumbers('robot', {start: 0, end: 1}), frameRate: 6, repeat: -1 });
-      this.anims.create({ key: 'botRight', frames: this.anims.generateFrameNumbers('robot', {start: 2, end: 3}), frameRate: 6, repeat: -1 });
-   
+      this.anims.create({ key: 'left', frames: this.anims.generateFrameNumbers('dude', [{start: 1, end: 2}]), frameRate: 0.5, repeat: -1 });
+      this.anims.create({ key: 'turn', frames: [{key: 'dude', frame: 3}], frameRate: 2 });
+      this.anims.create({ key: 'right', frames: this.anims.generateFrameNumbers('dude', {start: 4, end: 5}), frameRate: 0.5, repeat: -1 });
+      */
       
       //attach keyboard listeners
       this.cursors = this.input.keyboard.createCursorKeys();
@@ -89,8 +87,8 @@ class SceneStart extends Phaser.Scene{
       let robotY = Math.ceil(robot.y - robot.height/2);
       if(playerY <= robotY){
          //The player is over the robot
-         robot.destroy();         
-         player.addKill();         
+         robot.destroy();
+         player.addKill();
          console.log(player.kills());
       } else {
          //Decrease player life points
@@ -119,22 +117,22 @@ class SceneStart extends Phaser.Scene{
                callbackScope: this,
                loop: false
             });
+         }   
+      }
+      
+         // you win 
+         if(this.player.kills()>=15){
+            this.physics.pause();
+            this.time.addEvent({
+               delay: 100,
+               callback: function() {
+                  this.scene.start('SceneGameWin');
+                  //this.scene.start('SceneGameOver');
+               },
+               callbackScope: this,
+               loop: false
+            });
          }
-      }
-
-      // you win
-      if(this.player.kills()>=5){
-         this.physics.pause();
-         this.time.addEvent({
-            delay: 100,
-            callback: function() {
-               this.scene.start('SceneNext');
-            },
-            callbackScope: this,
-            loop: false
-         });
-      }
-
    }
 
 }

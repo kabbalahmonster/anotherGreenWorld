@@ -12,13 +12,14 @@ class Entity extends Phaser.GameObjects.Sprite {
 class Player extends Entity{
    constructor(scene, x, y, key){
       super(scene, x, y, key, "Player");
-      this.setData("speed", 160);
+      this.setData("speed", 200);
       this.setData("lifePoints", 100);
+      this.setData("killCount", 0);
    }
    create(){
    }
    moveUp(){
-      this.body.velocity.y = -this.getData('speed') * 2;
+      this.body.velocity.y = -this.getData('speed') * 3;
    }
    moveDown(){
       this.body.velocity.y = this.getData('speed');
@@ -41,6 +42,12 @@ class Player extends Entity{
    points(){
       return this.getData('lifePoints');
    }
+   kills(){
+      return this.getData('killCount');
+   }
+   addKill(){
+      this.setData('killCount', this.kills() + 1);
+   }
 
 }
 
@@ -56,7 +63,7 @@ class Robot extends Entity{
    }
    moveLeft(){
       this.body.velocity.x = -this.getData('speed');
-      // this.play('left', true);
+      this.play('botLeft', true);
    }
    stop(){
       this.body.velocity.x = 0;
@@ -64,7 +71,7 @@ class Robot extends Entity{
    }
    moveRight(){
       this.body.velocity.x = this.getData('speed');
-      // this.play('right', true);
+      this.play('botRight', true);
    }
 
    update(){

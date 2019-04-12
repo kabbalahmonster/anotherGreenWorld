@@ -12,6 +12,8 @@ var config = {
    },
    scene: [
       SceneStart,
+      SceneNext,
+      SceneGameWin,
       SceneGameOver
    ],
    // pixelArt: true,
