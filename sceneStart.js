@@ -26,6 +26,7 @@ class SceneStart extends Phaser.Scene{
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
       this.player = new Player(this, 200, 250, 'dude');
+      this.player.body.collideWorldBounds=true;
 
       // this.player = this.physics.add.sprite(100, 450, 'dude');
       // this.player.setBounce(0.1);

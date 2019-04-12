@@ -7,13 +7,14 @@ class SceneNext extends Phaser.Scene{
    preload() {
       this.load.image('bg', 'assets/greenWorldBG1.png');
       this.load.image('ground', 'assets/platform.png');
-      this.load.image('robot', 'assets/star.png');
-      /*
-      this.load.spritesheet('dude',
-         'assets/dude.png', 
-         {frameWidth: 32, frameHeight: 48}
+      this.load.spritesheet('robot', 
+         'assets/badBot2.png',
+         {frameWidth:90, frameHeight: 144}
       );
-      */
+      this.load.spritesheet('dude',
+         'assets/esmeralda5.png', 
+         {frameWidth: 106, frameHeight: 150}
+      );
    }
 
    create(){
@@ -25,7 +26,8 @@ class SceneNext extends Phaser.Scene{
 
       //this.platforms.create(50, 250, 'ground');
 
-      this.player = new Player(this, 200, 250, 'dude');
+      this.player = new Player(this, 200, 250, 'dude');      
+      this.player.body.collideWorldBounds=true;
 
       // this.player = this.physics.add.sprite(100, 450, 'dude');
       // this.player.setBounce(0.1);
