@@ -34,7 +34,6 @@ class SceneStart extends Phaser.Scene{
       
       //let flower = new Flower(this,200,250,'flower');
 
-
       // this.player.setBounce(0.1);
       // this.player.setCollideWorldBounds(true);
       this.physics.add.collider(this.player, this.platforms);

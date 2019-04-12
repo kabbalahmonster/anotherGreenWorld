@@ -6,6 +6,7 @@ class Entity extends Phaser.GameObjects.Sprite {
       this.scene.physics.world.enableBody(this, 0);
       this.setData('type', type);
       this.setData('isDead', false);
+      this.depth = 20;
    }
 }
 
@@ -89,6 +90,7 @@ class Robot extends Entity{
 class Flower extends Entity{
    constructor(scene, x, y, key){
       super(scene, x, y, key, "Flower");
+      this.depth =10;
    }
    create(){
    }
