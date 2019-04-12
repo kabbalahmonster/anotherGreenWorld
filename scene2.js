@@ -8,10 +8,12 @@ class SceneTwo extends Phaser.Scene{
    
    preload() {
       this.load.image('stage2bg', 'assets/stage2bg.png');
-      
       this.load.audio('stomp', 'assets/stomp.ogg');
-      flowerInc = 800 / (this.robotTarget);
-      flowerSpawn = 0;
+      flowerInc = config.width / (this.robotTarget); 
+      flowerSpawn = [];
+      for(let i = 0; i<this.robotTarget; i ++){
+         flowerSpawn.push(i*flowerInc);
+      }
    }
 
    create(){
@@ -84,12 +86,13 @@ class SceneTwo extends Phaser.Scene{
       if(playerY <= robotY){
          //The player is over the robot
          stompFX.play();
-         flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();
          player.addKill();
          // spawn flower when rocot killed                  
+         let spawnIndex = Phaser.Math.Between(0, flowerSpawn.length-1);
+         let [flowerX] = flowerSpawn.splice(spawnIndex, 1);
          let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
-         let flower = new Flower(this,flowerSpawn,300,flowerKey).setScale(0.5);
+         let flower = new Flower(this,flowerX,300,flowerKey).setScale(0.5);
          this.flowers.add(flower);
       } else {
          //Decrease player life points

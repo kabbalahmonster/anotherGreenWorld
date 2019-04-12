@@ -1,23 +1,23 @@
 class SceneOne extends Phaser.Scene{
 
-   
    constructor() {
       super({key: 'SceneOne'});
       this.robotTarget = 6;
       this.robotSpeed = {min: 40, max: 80};
    }   
-
    
    preload() {
       this.load.image('stage1bg', 'assets/stage1bg.png');
       this.load.image('pileLeft', 'assets/pile_left.png');
       this.load.image('pileRight', 'assets/pile_right.png');
       this.load.image('stage1ground', 'assets/stage1ground.png');
-      
       flowerInc = 800 / (this.robotTarget);
-      flowerSpawn = 0;
-
+      flowerSpawn = [];
+      for(let i = 0; i<this.robotTarget; i ++){
+         flowerSpawn.push(i*flowerInc);
+      }
    }
+
    create(){
       this.add.image(config.width/2, config.height/2, 'stage1bg');
       this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
@@ -94,12 +94,13 @@ class SceneOne extends Phaser.Scene{
       if(playerY <= robotY +40){
          //The player is over the robot
          stompFX.play();
-         flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();         
          player.addKill();         
          // spawn flower when robot killed     
+         let spawnIndex = Phaser.Math.Between(0, flowerSpawn.length-1);
+         let [flowerX] = flowerSpawn.splice(spawnIndex, 1);
          let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
-         let flower = new Flower(this,flowerSpawn,300,flowerKey).setScale(0.5);
+         let flower = new Flower(this,flowerX,300,flowerKey).setScale(0.5);
          this.flowers.add(flower);
          
       } else {
