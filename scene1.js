@@ -14,7 +14,9 @@ class SceneOne extends Phaser.Scene{
       this.load.image('pileRight', 'assets/pile_right.png');
       this.load.image('stage1ground', 'assets/stage1ground.png');
       this.load.image('invisible', 'assets/transparent.png');
-      this.load.image('flower', 'assets/star.png');
+      this.load.image('flower1', 'assets/flower1.png');
+      this.load.image('flower2', 'assets/flower2.png');
+      this.load.image('flower3', 'assets/flower3.png');
       this.load.spritesheet('robot', 
          'assets/badBot2.png',
          {frameWidth:90, frameHeight: 144}
@@ -46,10 +48,6 @@ class SceneOne extends Phaser.Scene{
       backTrack= this.sound.add('track1',{loop:true, detune: -200});
       backTrack.play();
       
-      //let flower = new Flower(this,200,250,'flower');
-
-      // this.player.setBounce(0.1);
-      // this.player.setCollideWorldBounds(true);
       this.physics.add.collider(this.player, this.platforms);
       //player animations
       this.anims.create({ key: 'left', frames: this.anims.generateFrameNumbers('dude', {start: 1, end: 2}), frameRate: 6, repeat: -1 });
@@ -115,7 +113,8 @@ class SceneOne extends Phaser.Scene{
          robot.destroy();         
          player.addKill();         
          // spawn flower when robot killed     
-         let flower = new Flower(this,flowerSpawn,300,'flower');
+         let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
+         let flower = new Flower(this,flowerSpawn,300,flowerKey).setScale(0.5);
          this.flowers.add(flower);
          
       } else {
@@ -139,7 +138,7 @@ class SceneOne extends Phaser.Scene{
             backTrack.stop();
             this.physics.pause();
             this.time.addEvent({
-               delay: 100,
+               delay: 1000,
                callback: function() {
                   this.scene.start('SceneGameOver');
                },
@@ -153,11 +152,11 @@ class SceneOne extends Phaser.Scene{
       // all robots were killed go the next level
       if(this.player.kills() >= this.robotTarget){
          backTrack.stop();
-         this.physics.pause();
          this.time.addEvent({
-            delay: 100,
+            delay: 1000,
             callback: function() {
                this.scene.start('SceneTwo');
+               this.physics.pause();
             },
             callbackScope: this,
             loop: false
