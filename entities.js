@@ -49,19 +49,21 @@ class Player extends Entity{
    }
    addKill(){
       this.setData('killCount', this.kills() + 1);
+      game.score += 1;
    }
 
 }
 
 class Robot extends Entity{
-   constructor(scene, x, y, key){
+   constructor(scene, x, y, key, speed){
       super(scene, x, y, key, "Robot");
       //Set a random speed for the robot
-      this.setData("speed", Phaser.Math.Between(40, 80));
+      this.setData("speed", speed);
       this.body.setBounce(0);
-         // robot.setBounce(0);
-         // robot.setCollideWorldBounds(true);
-         // robot.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      this.directionX = 1;
+      if(x > config.width/2){
+         this.directionX = -1;
+      }
    }
    moveLeft(){
       this.body.velocity.x = -this.getData('speed');
@@ -69,7 +71,6 @@ class Robot extends Entity{
    }
    stop(){
       this.body.velocity.x = 0;
-      // this.play('turn');
    }
    moveRight(){
       this.body.velocity.x = this.getData('speed');
@@ -77,11 +78,16 @@ class Robot extends Entity{
    }
 
    update(){
-      // console.log(this.scene.player.x);
-      if(this.body.x > this.scene.player.x){
-         this.moveLeft();
-      } else {
+      if(this.body.x < this.body.width/2){
+         this.directionX = 1;
+      } 
+      if(this.body.x + this.body.width/2 >= config.width){
+         this.directionX =  -1;
+      }
+      if(this.directionX == 1){
          this.moveRight();
+      } else {
+         this.moveLeft();
       }
    }
 }
