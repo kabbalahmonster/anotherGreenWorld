@@ -23,7 +23,7 @@ class SceneTwo extends Phaser.Scene{
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
      
-      backTrack= this.sound.add('track1',{loop:true});
+      backTrack= this.sound.add('track2',{loop:true, detune: -500});
       backTrack.play();
 
       // this.player = this.physics.add.sprite(100, 450, 'dude');
