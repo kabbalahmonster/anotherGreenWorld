@@ -17,6 +17,7 @@ class Player extends Entity{
       this.setData("lifePoints", 100);
       this.setData("killCount", 0);
       this.setData('canCreatePond', true);
+      this.setData('maxNumberOfPonds', 2);
    }
    create(){
    }
@@ -45,6 +46,7 @@ class Player extends Entity{
    points(){ return this.getData('lifePoints'); }
    kills(){ return this.getData('killCount'); }
    canCreatePond(){ return this.getData('canCreatePond'); }
+   maxNumberOfPonds(){ return this.getData('maxNumberOfPonds'); }
    addKill(points=1){
       this.setData('killCount', this.kills() + 1);
       game.score += points;
@@ -52,8 +54,7 @@ class Player extends Entity{
    createPond(){
       let {x, y}= this.body;
       //If the player is almost at floor level, and there are no more than 2 ponds
-      let maxNumberOfPonds = 2;
-      if(y > 420 && this.canCreatePond() && this.scene.ponds.getChildren().length <= maxNumberOfPonds){
+      if(y > 420 && this.canCreatePond() && this.scene.ponds.getChildren().length <= this.maxNumberOfPonds()){
          let pond = new Pond(this.scene,x,y+10,'pond');
          this.scene.ponds.add(pond);
          this.setData('canCreatePond', false);
@@ -78,7 +79,7 @@ class Pond extends Entity{
    create(){
    }
    hit(){
-      this.setTint(0x0000fff3);
+      this.setTint(0x000010);
       this.setData('lives', this.power()-1);
       this.body.velocity.x = 0;
       if(this.power() == 0){
@@ -92,7 +93,7 @@ class Pond extends Entity{
 
 
 class Robot extends Entity{
-   constructor(scene, x, y, key, speed){
+   constructor(scene, x, y, key, speed, leftAnim='botLeft', rightAnim='botRight'){
       super(scene, x, y, key, "Robot");
       //Set a random speed for the robot
       this.setData("speed", speed);
@@ -101,17 +102,19 @@ class Robot extends Entity{
       if(x > config.width/2){
          this.directionX = -1;
       }
+      this.leftAnim = leftAnim;
+      this.rightAnim = rightAnim;
    }
    moveLeft(){
       this.body.velocity.x = -this.getData('speed');
-      this.play('botLeft', true);
+      this.play(this.leftAnim, true);
    }
    stop(){
       this.body.velocity.x = 0;
    }
    moveRight(){
       this.body.velocity.x = this.getData('speed');
-      this.play('botRight', true);
+      this.play(this.rightAnim, true);
    }
 
    update(){

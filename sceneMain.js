@@ -17,7 +17,10 @@ class SceneMain extends Phaser.Scene{
          'assets/esmeralda5.png', 
          {frameWidth: 106, frameHeight: 150}
       );
-      
+      this.load.spritesheet('robot2', 
+         'assets/badBot3.png',
+         {frameWidth:90, frameHeight: 139}
+      );
       this.load.audio('track1', 'assets/track1.ogg');
       this.load.audio('track2', 'assets/track2.ogg');
       this.load.audio('track3', 'assets/track3.ogg');
@@ -32,13 +35,15 @@ class SceneMain extends Phaser.Scene{
       //robot animations
       this.anims.create({ key: 'botLeft', frames: this.anims.generateFrameNumbers('robot', {start: 0, end: 1}), frameRate: 6, repeat: -1 });
       this.anims.create({ key: 'botRight', frames: this.anims.generateFrameNumbers('robot', {start: 2, end: 3}), frameRate: 6, repeat: -1 });
+      this.anims.create({ key: 'bot2Left', frames: this.anims.generateFrameNumbers('robot2', {start: 0, end: 1}), frameRate: 6, repeat: -1 });
+      this.anims.create({ key: 'bot2Right', frames: this.anims.generateFrameNumbers('robot2', {start: 2, end: 3}), frameRate: 8, repeat: -1 });
       this.add.image(config.width/2, config.height/2, 'title');
       this.time.addEvent({
          delay: 3000,
          callback: function(){
-            this.scene.start('SceneOne');
+            // this.scene.start('SceneOne');
             // this.scene.start('SceneTwo');
-            // this.scene.start('SceneThree');
+            this.scene.start('SceneThree');
          },
          callbackScope: this 
       });

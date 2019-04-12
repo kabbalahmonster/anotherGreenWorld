@@ -4,10 +4,11 @@ class SceneThree extends Phaser.Scene{
       super({key: 'SceneThree'});
       this.robotTarget = 12;
       this.robotSpeed = {min: 120, max: 160};
+      this.spawnRobots = 0;
    }
    
    preload() {
-      this.load.image('stage3bg', 'assets/stage1bg.png');
+      this.load.image('stage3bg', 'assets/stage3bg.png');
       this.load.audio('stomp', 'assets/stomp.ogg');
       flowerInc = config.width / (this.robotTarget); 
       flowerSpawn = [];
@@ -20,6 +21,8 @@ class SceneThree extends Phaser.Scene{
       this.add.image(config.width/2, config.height/2, 'stage3bg');
       this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
+      this.add.image(40, 90, 'pond').setScale(0.5);
+      this.pondText = this.add.text(90, 70, '3', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(config.width/2, config.height-20, 'invisible')
          .setScale(config.width*2, 100).refreshBody();
@@ -49,16 +52,20 @@ class SceneThree extends Phaser.Scene{
          delay: 1000,
          callback: this.robotLoop,
          callbackScope: this,
-         repeat: this.robotTarget - 1
+         loop: true
       });
    }
 
    robotLoop(){
-      let positions = [30, config.width - 30];
-      let x = Phaser.Utils.Array.GetRandom(positions);
-      let robotSpeed = Phaser.Math.Between(this.robotSpeed.min, this.robotSpeed.max);
-      let robot = new Robot(this, x, 300, 'robot', robotSpeed);
-      this.robots.add(robot);
+      let robotLimit = 5;
+      if(this.spawnRobots<this.robotTarget && this.robots.getChildren().length<5){
+         let positions = [30, config.width - 30];
+         let x = Phaser.Utils.Array.GetRandom(positions);
+         let robotSpeed = Phaser.Math.Between(this.robotSpeed.min, this.robotSpeed.max);
+         let robot = new Robot(this, x, 300, 'robot2', robotSpeed, 'bot2Left', 'bot2Right');
+         this.spawnRobots ++;
+         this.robots.add(robot);
+      }
    }
 
    update() {
@@ -74,6 +81,7 @@ class SceneThree extends Phaser.Scene{
       }
       if(this.cursors.space.isDown){
          this.player.createPond();
+         this.pondText.setText(this.player.maxNumberOfPonds()-this.ponds.getChildren().length+1);
       }
       //update the robots
       for(var i =0; i< this.robots.getChildren().length; i ++){
@@ -88,6 +96,7 @@ class SceneThree extends Phaser.Scene{
       stompFX.play();
       this.player.addKill(3);
       this.scoreText.setText('score:' + game.score);
+      this.pondText.setText(this.player.maxNumberOfPonds()-this.ponds.getChildren().length + 1);
       // spawn flower when rocot killed                  
       let spawnIndex = Phaser.Math.Between(0, flowerSpawn.length-1);
       let [flowerX] = flowerSpawn.splice(spawnIndex, 1);
