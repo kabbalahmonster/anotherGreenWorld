@@ -99,7 +99,8 @@ class SceneNext extends Phaser.Scene{
          flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();
          player.addKill();
-         console.log(player.kills());                     
+         //console.log(player.kills());   
+         // spawn flower when rocot killed                  
          let flower = new Flower(this,flowerSpawn,300,'flower');
          this.flowers.add(flower);
       } else {
