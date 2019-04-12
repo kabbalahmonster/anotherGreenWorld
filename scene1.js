@@ -9,9 +9,14 @@ class SceneOne extends Phaser.Scene{
 
    
    preload() {
-      this.load.image('bgstage1', 'assets/greenWorldBG1.png');
-      this.load.image('ground', 'assets/platform.png');
-      this.load.image('flower', 'assets/star.png');
+      this.load.image('stage1bg', 'assets/stage1bg.png');
+      this.load.image('pileLeft', 'assets/pile_left.png');
+      this.load.image('pileRight', 'assets/pile_right.png');
+      this.load.image('stage1ground', 'assets/stage1ground.png');
+      this.load.image('invisible', 'assets/transparent.png');
+      this.load.image('flower1', 'assets/flower1.png');
+      this.load.image('flower2', 'assets/flower2.png');
+      this.load.image('flower3', 'assets/flower3.png');
       this.load.spritesheet('robot', 
          'assets/badBot2.png',
          {frameWidth:90, frameHeight: 144}
@@ -31,13 +36,17 @@ class SceneOne extends Phaser.Scene{
 
    }
    create(){
-      this.add.image(400, 300, 'bgstage1');
+      this.add.image(config.width/2, config.height/2, 'stage1bg');
       this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
-      this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+      this.platforms.create(config.width/2, config.height-20, 'invisible')
+         .setScale(config.width*2, 100).refreshBody();
       this.player = new Player(this, 200, 250, 'dude');
       this.player.body.collideWorldBounds=true;
+      //add left and right pile
+      this.add.image(100, config.height-90, 'pileLeft').depth = 30;
+      this.add.image(config.width-100, config.height-140, 'pileRight').setScale(0.8).depth = 30;
 
       backTrack= this.sound.add('track3',{loop:true/*, detune: -200*/});
       backTrack.play();
@@ -107,14 +116,15 @@ class SceneOne extends Phaser.Scene{
       let playerY = Math.ceil(player.y + player.height/2);
       let robotY = Math.ceil(robot.y - robot.height/2);
 
-      if(playerY <= robotY){
+      if(playerY <= robotY +40){
          //The player is over the robot
          stompFX.play();
          flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();         
          player.addKill();         
          // spawn flower when robot killed     
-         let flower = new Flower(this,flowerSpawn,300,'flower');
+         let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
+         let flower = new Flower(this,flowerSpawn,300,flowerKey).setScale(0.5);
          this.flowers.add(flower);
          
       } else {
@@ -138,7 +148,7 @@ class SceneOne extends Phaser.Scene{
             backTrack.stop();
             this.physics.pause();
             this.time.addEvent({
-               delay: 100,
+               delay: 1000,
                callback: function() {
                   this.scene.start('SceneGameOver');
                },
@@ -152,11 +162,11 @@ class SceneOne extends Phaser.Scene{
       // all robots were killed go the next level
       if(this.player.kills() >= this.robotTarget){
          backTrack.stop();
-         this.physics.pause();
          this.time.addEvent({
-            delay: 100,
+            delay: 1000,
             callback: function() {
                this.scene.start('SceneTwo');
+               this.physics.pause();
             },
             callbackScope: this,
             loop: false
