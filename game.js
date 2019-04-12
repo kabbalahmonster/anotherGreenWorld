@@ -21,3 +21,8 @@ var config = {
 };
 var game = new Phaser.Game(config);
 
+let flowerSpawn;
+let flowerInc;
+let goal;
+let flowers;
+

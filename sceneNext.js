@@ -34,7 +34,10 @@ class SceneNext extends Phaser.Scene{
       
       //attach keyboard listeners
       this.cursors = this.input.keyboard.createCursorKeys();
-      this.robots = this.physics.add.group();
+      this.robots = this.physics.add.group();      
+      this.flowers = this.physics.add.group();
+      
+      this.physics.add.collider(this.flowers, this.platforms);
       this.physics.add.collider(this.player, this.robots, this.playerRobotCollision, null, this);
       this.physics.add.collider(this.robots, this.platforms);
       this.physics.add.collider(this.robots, this.player);
@@ -80,8 +83,13 @@ class SceneNext extends Phaser.Scene{
       let robotY = Math.ceil(robot.y - robot.height/2);
       if(playerY <= robotY){
          //The player is over the robot
+         flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();
          player.addKill();
+         //console.log(player.kills());   
+         // spawn flower when rocot killed                  
+         let flower = new Flower(this,flowerSpawn,300,'flower');
+         this.flowers.add(flower);
       } else {
          //Decrease player life points
          player.anims.play('turn');
@@ -113,13 +121,12 @@ class SceneNext extends Phaser.Scene{
       }
       
          // you win 
-         if(this.player.kills()>=15){
+         if(this.player.kills()>=goal){
             this.physics.pause();
             this.time.addEvent({
                delay: 100,
                callback: function() {
                   this.scene.start('SceneGameWin');
-                  //this.scene.start('SceneGameOver');
                },
                callbackScope: this,
                loop: false

@@ -85,3 +85,13 @@ class Robot extends Entity{
    }
 }
 
+
+class Flower extends Entity{
+   constructor(scene, x, y, key){
+      super(scene, x, y, key, "Flower");
+   }
+   create(){
+   }
+}
+
+
