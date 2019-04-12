@@ -25,4 +25,5 @@ let flowerSpawn;
 let flowerInc;
 let flowers;
 let backTrack;
+let stompFX;
 

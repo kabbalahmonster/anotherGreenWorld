@@ -23,9 +23,12 @@ class SceneOne extends Phaser.Scene{
       
       this.load.audio('track1', 'assets/track1.ogg');
       this.load.audio('track2', 'assets/track2.ogg');
+      this.load.audio('track3', 'assets/track3.ogg');
+      this.load.audio('stomp', 'assets/stomp.ogg');
       
       flowerInc = 800 / (this.robotTarget);
       flowerSpawn = 0;
+
    }
    create(){
       this.add.image(400, 300, 'bgstage1');
@@ -36,8 +39,10 @@ class SceneOne extends Phaser.Scene{
       this.player = new Player(this, 200, 250, 'dude');
       this.player.body.collideWorldBounds=true;
 
-      backTrack= this.sound.add('track1',{loop:true, detune: -200});
+      backTrack= this.sound.add('track3',{loop:true/*, detune: -200*/});
       backTrack.play();
+      
+      stompFX = this.sound.add('stomp');
       
       //let flower = new Flower(this,200,250,'flower');
 
@@ -104,6 +109,7 @@ class SceneOne extends Phaser.Scene{
 
       if(playerY <= robotY){
          //The player is over the robot
+         stompFX.play();
          flowerSpawn = flowerSpawn + flowerInc;
          robot.destroy();         
          player.addKill();         
