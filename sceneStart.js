@@ -82,13 +82,31 @@ class SceneStart extends Phaser.Scene{
       } else {
          //Decrease player life points
          player.anims.play('turn');
+         //set a red tint
          player.setTint(0xff0000);
+         //remove the tint after a while
+         this.time.addEvent({
+            delay: 100,
+            callback: function(){
+               player.setTint(0xffffff);
+            },
+            callbackScope: this,
+            loop: true
+         });
          player.decreaseLife();
          this.lifeText.setText('life:' + this.player.points());
+         // gameOver = true;
          if(this.player.points()<=0){
             this.physics.pause();
+            this.time.addEvent({
+               delay: 100,
+               callback: function() {
+                  this.scene.start('SceneGameOver');
+               },
+               callbackScope: this,
+               loop: false
+            });
          }
-         // gameOver = true;
       }
    }
 

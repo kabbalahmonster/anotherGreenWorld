@@ -11,7 +11,8 @@ var config = {
       }
    },
    scene: [
-      SceneStart
+      SceneStart,
+      SceneGameOver
    ],
    // pixelArt: true,
    // roundPixels: true
