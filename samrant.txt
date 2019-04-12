@@ -1,0 +1,6 @@
+
+TODO:
+
+- Player invincibility after enemy hits them
+- jump animation
+- 

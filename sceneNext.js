@@ -10,8 +10,8 @@ class SceneTwo extends Phaser.Scene{
 
    create(){
       this.add.image(400, 300, 'bgstage2');
-      this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
-      this.lifeText = this.add.text(16, 40, 'life: 10', {fontSize: '32px', fill: '#000'});
+      this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+      this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
@@ -49,6 +49,7 @@ class SceneTwo extends Phaser.Scene{
       });
    }
 
+   // listen for robot count every second, if 
    robotLoop(){
       if(this.robots.getChildren().length < 8){
          let positions = [30, config.width - 30];
@@ -74,8 +75,6 @@ class SceneTwo extends Phaser.Scene{
          var robot = this.robots.getChildren()[i];
          robot.update();
       }
-
-      
    }
 
    playerRobotCollision(player, robot){
