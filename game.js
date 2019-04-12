@@ -11,6 +11,7 @@ var config = {
       }
    },
    scene: [
+      SceneMain,
       SceneOne,
       SceneTwo,
       SceneGameWin,
