@@ -1,13 +1,13 @@
-class SceneTwo extends Phaser.Scene{
+class SceneThree extends Phaser.Scene{
 
    constructor() {
-      super({key: 'SceneTwo'});
-      this.robotTarget = 16;
+      super({key: 'SceneThree'});
+      this.robotTarget = 12;
       this.robotSpeed = {min: 120, max: 160};
    }
    
    preload() {
-      this.load.image('stage2bg', 'assets/stage2bg.png');
+      this.load.image('stage3bg', 'assets/stage1bg.png');
       this.load.audio('stomp', 'assets/stomp.ogg');
       flowerInc = config.width / (this.robotTarget); 
       flowerSpawn = [];
@@ -17,7 +17,7 @@ class SceneTwo extends Phaser.Scene{
    }
 
    create(){
-      this.add.image(config.width/2, config.height/2, 'stage2bg');
+      this.add.image(config.width/2, config.height/2, 'stage3bg');
       this.scoreText = this.add.text(16, 16, 'score: ' + game.score, {fontSize: '32px', fill: '#000'});
       this.lifeText = this.add.text(16, 40, 'life: 100', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
@@ -26,10 +26,8 @@ class SceneTwo extends Phaser.Scene{
 
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
-     
-      
-      stompFX = this.sound.add('stomp');
 
+      stompFX = this.sound.add('stomp');
       backTrack= this.sound.add('track2',{loop:true, detune: -500});
       backTrack.play();
       
@@ -39,8 +37,11 @@ class SceneTwo extends Phaser.Scene{
       this.cursors = this.input.keyboard.createCursorKeys();
       this.robots = this.physics.add.group();      
       this.flowers = this.physics.add.group();
+      this.ponds = this.physics.add.group();
       
       this.physics.add.collider(this.flowers, this.platforms);
+      this.physics.add.collider(this.ponds, this.platforms);
+      this.physics.add.collider(this.ponds, this.robots, this.pondRobotCollision, null, this);
       this.physics.add.collider(this.player, this.robots, this.playerRobotCollision, null, this);
       this.physics.add.collider(this.robots, this.platforms);
       this.physics.add.collider(this.robots, this.player);
@@ -71,13 +72,41 @@ class SceneTwo extends Phaser.Scene{
       if(this.cursors.up.isDown && this.player.body.touching.down) {
          this.player.moveUp();
       }
+      if(this.cursors.space.isDown){
+         this.player.createPond();
+      }
       //update the robots
       for(var i =0; i< this.robots.getChildren().length; i ++){
          var robot = this.robots.getChildren()[i];
          robot.update();
       }
+   }
 
-      
+   pondRobotCollision(pond, robot){
+      robot.destroy();
+      pond.hit();
+      stompFX.play();
+      this.player.addKill(3);
+      this.scoreText.setText('score:' + game.score);
+      // spawn flower when rocot killed                  
+      let spawnIndex = Phaser.Math.Between(0, flowerSpawn.length-1);
+      let [flowerX] = flowerSpawn.splice(spawnIndex, 1);
+      let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
+      let flower = new Flower(this,flowerX,300,flowerKey).setScale(0.5);
+      this.flowers.add(flower);
+      // all robots were killed go the next level
+      if(this.player.kills()>=this.robotTarget){
+         backTrack.stop();
+         this.time.addEvent({
+            delay: 1000,
+            callback: function() {
+               this.scene.start('SceneGameWin');
+               this.physics.pause();
+            },
+            callbackScope: this,
+            loop: false
+         });
+      }
    }
 
    playerRobotCollision(player, robot){
@@ -85,15 +114,6 @@ class SceneTwo extends Phaser.Scene{
       let robotY = Math.ceil(robot.y - robot.height/2);
       if(playerY <= robotY){
          //The player is over the robot
-         stompFX.play();
-         robot.destroy();
-         player.addKill();
-         // spawn flower when rocot killed                  
-         let spawnIndex = Phaser.Math.Between(0, flowerSpawn.length-1);
-         let [flowerX] = flowerSpawn.splice(spawnIndex, 1);
-         let flowerKey = Phaser.Utils.Array.GetRandom(['flower1', 'flower2', 'flower3']);
-         let flower = new Flower(this,flowerX,300,flowerKey).setScale(0.5);
-         this.flowers.add(flower);
       } else {
          //Decrease player life points
          player.anims.play('turn');
@@ -112,7 +132,6 @@ class SceneTwo extends Phaser.Scene{
          this.lifeText.setText('life:' + this.player.points());
          // gameOver = true;
          if(this.player.points()<=0){
-            
             backTrack.stop();
             this.physics.pause();
             this.time.addEvent({
@@ -124,22 +143,6 @@ class SceneTwo extends Phaser.Scene{
                loop: false
             });
          }   
-      }
-      
-
-      this.scoreText.setText('score:' + game.score);
-      // all robots were killed go the next level
-      if(this.player.kills()>=this.robotTarget){
-         backTrack.stop();
-         this.time.addEvent({
-            delay: 1000,
-            callback: function() {
-               this.scene.start('SceneThree');
-               this.physics.pause();
-            },
-            callbackScope: this,
-            loop: false
-         });
       }
    }
 

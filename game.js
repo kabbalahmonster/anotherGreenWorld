@@ -14,6 +14,7 @@ var config = {
       SceneMain,
       SceneOne,
       SceneTwo,
+      SceneThree,
       SceneGameWin,
       SceneGameOver
    ],

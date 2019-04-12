@@ -8,6 +8,7 @@ class SceneMain extends Phaser.Scene{
       this.load.image('flower1', 'assets/flower1.png');
       this.load.image('flower2', 'assets/flower2.png');
       this.load.image('flower3', 'assets/flower3.png');
+      this.load.image('pond', 'assets/pond.png');
       this.load.spritesheet('robot', 
          'assets/badBot2.png',
          {frameWidth:90, frameHeight: 144}
@@ -37,6 +38,7 @@ class SceneMain extends Phaser.Scene{
          callback: function(){
             this.scene.start('SceneOne');
             // this.scene.start('SceneTwo');
+            // this.scene.start('SceneThree');
          },
          callbackScope: this 
       });

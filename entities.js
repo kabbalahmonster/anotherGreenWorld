@@ -16,6 +16,7 @@ class Player extends Entity{
       this.setData("speed", 200);
       this.setData("lifePoints", 100);
       this.setData("killCount", 0);
+      this.setData('canCreatePond', true);
    }
    create(){
    }
@@ -41,18 +42,54 @@ class Player extends Entity{
    decreaseLife(){
       this.setData('lifePoints', this.points() - 1);
    }
-   points(){
-      return this.getData('lifePoints');
-   }
-   kills(){
-      return this.getData('killCount');
-   }
-   addKill(){
+   points(){ return this.getData('lifePoints'); }
+   kills(){ return this.getData('killCount'); }
+   canCreatePond(){ return this.getData('canCreatePond'); }
+   addKill(points=1){
       this.setData('killCount', this.kills() + 1);
-      game.score += 1;
+      game.score += points;
+   }
+   createPond(){
+      let {x, y}= this.body;
+      //If the player is almost at floor level, and there are no more than 2 ponds
+      let maxNumberOfPonds = 2;
+      if(y > 420 && this.canCreatePond() && this.scene.ponds.getChildren().length <= maxNumberOfPonds){
+         let pond = new Pond(this.scene,x,y+10,'pond');
+         this.scene.ponds.add(pond);
+         this.setData('canCreatePond', false);
+         this.scene.time.addEvent({
+            delay: 500,
+            callback: function(){
+               this.setData('canCreatePond', true);
+            },
+            callbackScope: this
+         });
+      }
    }
 
 }
+class Pond extends Entity{
+   constructor(scene, x, y, key){
+      super(scene, x, y, key, "Pond");
+      this.depth =10;
+      this.setData('lives', 2);
+      this.body.collideWorldBounds=true;
+   }
+   create(){
+   }
+   hit(){
+      this.setTint(0x0000fff3);
+      this.setData('lives', this.power()-1);
+      this.body.velocity.x = 0;
+      if(this.power() == 0){
+         this.destroy();
+      }
+   }
+   power(){
+      return this.getData('lives');
+   }
+}
+
 
 class Robot extends Entity{
    constructor(scene, x, y, key, speed){
@@ -101,5 +138,3 @@ class Flower extends Entity{
    create(){
    }
 }
-
-
