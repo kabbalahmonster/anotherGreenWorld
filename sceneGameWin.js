@@ -11,5 +11,12 @@ class SceneGameWin extends Phaser.Scene{
          align: 'center'
       });
       this.title.setOrigin(0.5);
+      this.time.addEvent({
+         delay: 1500,
+         callback: function (){
+            document.location.reload();
+         },
+         callbackScope: this
+      });
    }
 }
