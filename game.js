@@ -6,12 +6,15 @@ var config = {
    physics: {
       default: 'arcade',
       arcade: {
-         gravity: {x: 0, y: 800},
+         gravity: {x: 0, y: 1000},
          debug: false
       }
    },
    scene: [
       SceneMain,
+      SceneBetween12,
+      SceneBetween23,
+      SceneBetween34,
       SceneOne,
       SceneTwo,
       SceneThree,

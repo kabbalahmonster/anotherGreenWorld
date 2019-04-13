@@ -16,5 +16,12 @@ class SceneGameOver extends Phaser.Scene{
       backTrack = this.sound.add('gameover');
       backTrack.play();
       this.title.setOrigin(0.5);
+      this.time.addEvent({
+         delay: 1500,
+         callback: function (){
+            document.location.reload();
+         },
+         callbackScope: this
+      });
    }
 }

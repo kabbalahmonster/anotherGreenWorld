@@ -25,7 +25,7 @@ class SceneThree extends Phaser.Scene{
       this.pondText = this.add.text(90, 70, '3', {fontSize: '32px', fill: '#000'});
       this.platforms = this.physics.add.staticGroup();
       this.platforms.create(config.width/2, config.height, 'invisible')
-         .setScale(config.width*2, 100).refreshBody();
+         .setScale(config.width*4, 10).refreshBody();
 
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;

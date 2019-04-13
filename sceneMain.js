@@ -25,6 +25,7 @@ class SceneMain extends Phaser.Scene{
       this.load.audio('track2', 'assets/track2.ogg');
       this.load.audio('track3', 'assets/track3.ogg');
       this.load.audio('stomp', 'assets/stomp.ogg');
+<<<<<<< HEAD
       this.load.audio('ouch', 'assets/ouch.ogg');
       this.load.audio('drop', 'assets/drop.ogg');
       this.load.audio('gameover', 'assets/gameover.ogg');
@@ -32,6 +33,8 @@ class SceneMain extends Phaser.Scene{
       this.load.audio('win', 'assets/win.ogg');
       this.load.audio('intro', 'assets/intro.ogg');
 
+=======
+>>>>>>> 369d3ed8d197555bcf28d449450fb31019fe413a
    }
    create(){
       //player animations
@@ -45,6 +48,7 @@ class SceneMain extends Phaser.Scene{
       this.anims.create({ key: 'bot2Left', frames: this.anims.generateFrameNumbers('robot2', {start: 0, end: 1}), frameRate: 6, repeat: -1 });
       this.anims.create({ key: 'bot2Right', frames: this.anims.generateFrameNumbers('robot2', {start: 2, end: 3}), frameRate: 8, repeat: -1 });
       this.add.image(config.width/2, config.height/2, 'title');
+<<<<<<< HEAD
 
       
       backTrack = this.sound.add('intro',{loop:true/*, detune: -200*/});
@@ -57,6 +61,12 @@ class SceneMain extends Phaser.Scene{
          callback: function(){            
             backTrack.stop();
             this.scene.start('SceneOne');
+=======
+      this.time.addEvent({
+         delay: 3000,
+         callback: function(){
+            this.scene.start('SceneBetween12');
+>>>>>>> 369d3ed8d197555bcf28d449450fb31019fe413a
             // this.scene.start('SceneTwo');
             // this.scene.start('SceneThree');
          },
