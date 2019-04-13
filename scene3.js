@@ -30,7 +30,10 @@ class SceneThree extends Phaser.Scene{
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
 
-      stompFX = this.sound.add('stomp');
+      stompFX = this.sound.add('stomp');      
+      ouchFX = this.sound.add('ouch');
+      dropFX = this.sound.add('drop');
+
       backTrack= this.sound.add('track3',{loop:true, detune: -500});
       backTrack.play();
       
@@ -80,6 +83,7 @@ class SceneThree extends Phaser.Scene{
          this.player.moveUp();
       }
       if(this.cursors.space.isDown){
+         dropFX.play();
          this.player.createPond();
          this.pondText.setText(this.player.maxNumberOfPonds()-this.ponds.getChildren().length+1);
       }
@@ -124,6 +128,8 @@ class SceneThree extends Phaser.Scene{
       if(playerY <= robotY){
          //The player is over the robot
       } else {
+         
+         ouchFX.play();
          //Decrease player life points
          player.anims.play('turn');
          //set a red tint

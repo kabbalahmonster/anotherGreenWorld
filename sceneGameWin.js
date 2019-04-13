@@ -10,6 +10,9 @@ class SceneGameWin extends Phaser.Scene{
          color: '#ffffff',
          align: 'center'
       });
+
+      backTrack = this.sound.add('win');
+      backTrack.play();
       this.title.setOrigin(0.5);
    }
 }

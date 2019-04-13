@@ -28,4 +28,6 @@ let flowerInc;
 let flowers;
 let backTrack;
 let stompFX;
+let ouchFX;
+let dropFX;
 

@@ -35,6 +35,7 @@ class SceneOne extends Phaser.Scene{
       backTrack.play();
       
       stompFX = this.sound.add('stomp');
+      ouchFX = this.sound.add('ouch');
       
       //let flower = new Flower(this,200,250,'flower');
 
@@ -108,6 +109,8 @@ class SceneOne extends Phaser.Scene{
          player.anims.play('turn');
          //set a red tint
          player.setTint(0xff0000);
+         
+         ouchFX.play();
          //remove the tint after a while
          this.time.addEvent({
             delay: 100,

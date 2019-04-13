@@ -8,12 +8,14 @@ class SceneTwo extends Phaser.Scene{
    
    preload() {
       this.load.image('stage2bg', 'assets/stage2bg.png');
-      this.load.audio('stomp', 'assets/stomp.ogg');
+      this.load.audio('stomp', 'assets/stomp.ogg');            
+      //this.load.audio('ouch', 'assets/ouch.ogg');
       flowerInc = config.width / (this.robotTarget); 
       flowerSpawn = [];
       for(let i = 0; i<this.robotTarget; i ++){
          flowerSpawn.push(i*flowerInc);
       }
+
    }
 
    create(){
@@ -27,11 +29,14 @@ class SceneTwo extends Phaser.Scene{
       this.player = new Player(this, 200, 250, 'dude');      
       this.player.body.collideWorldBounds=true;
      
+           
       
-      stompFX = this.sound.add('stomp');
 
       backTrack= this.sound.add('track2',{loop:true, detune: -500});
       backTrack.play();
+
+      ouchFX = this.sound.add('ouch');
+      stompFX = this.sound.add('stomp'); 
       
       this.physics.add.collider(this.player, this.platforms);
       
@@ -98,7 +103,9 @@ class SceneTwo extends Phaser.Scene{
          //Decrease player life points
          player.anims.play('turn');
          //set a red tint
-         player.setTint(0xff0000);
+         player.setTint(0xff0000);        
+         
+         ouchFX.play();
          //remove the tint after a while
          this.time.addEvent({
             delay: 100,

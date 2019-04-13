@@ -25,7 +25,13 @@ class SceneMain extends Phaser.Scene{
       this.load.audio('track2', 'assets/track2.ogg');
       this.load.audio('track3', 'assets/track3.ogg');
       this.load.audio('stomp', 'assets/stomp.ogg');
+      this.load.audio('ouch', 'assets/ouch.ogg');
+      this.load.audio('drop', 'assets/drop.ogg');
+      this.load.audio('gameover', 'assets/gameover.ogg');
+      
+      this.load.audio('win', 'assets/win.ogg');
       this.load.audio('intro', 'assets/intro.ogg');
+
    }
    create(){
       //player animations
@@ -41,13 +47,13 @@ class SceneMain extends Phaser.Scene{
       this.add.image(config.width/2, config.height/2, 'title');
 
       
-      backTrack = this.sound.add('track1',{loop:true/*, detune: -200*/});
+      backTrack = this.sound.add('intro',{loop:true/*, detune: -200*/});
       backTrack.play(); 
 
       
 
       this.time.addEvent({
-         delay: 3000,
+         delay: 4000,
          callback: function(){            
             backTrack.stop();
             this.scene.start('SceneOne');
