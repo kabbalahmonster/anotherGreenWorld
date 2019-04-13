@@ -2,7 +2,7 @@ class SceneOne extends Phaser.Scene{
 
    constructor() {
       super({key: 'SceneOne'});
-      this.robotTarget = 6;
+      this.robotTarget = 10;
       this.robotSpeed = {min: 40, max: 80};
    }   
    
@@ -53,7 +53,7 @@ class SceneOne extends Phaser.Scene{
       this.physics.add.collider(this.robots, this.platforms);
       this.physics.add.collider(this.robots, this.player);
       this.time.addEvent({
-         delay: 1000,
+         delay: 1500,
          callback: this.robotLoop,
          callbackScope: this,
          repeat: this.robotTarget - 1
@@ -141,7 +141,7 @@ class SceneOne extends Phaser.Scene{
          this.time.addEvent({
             delay: 1000,
             callback: function() {
-               this.scene.start('SceneTwo');
+               this.scene.start('SceneBetween23');
                this.physics.pause();
             },
             callbackScope: this,

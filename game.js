@@ -12,6 +12,9 @@ var config = {
    },
    scene: [
       SceneMain,
+      SceneBetween12,
+      SceneBetween23,
+      SceneBetween34,
       SceneOne,
       SceneTwo,
       SceneThree,

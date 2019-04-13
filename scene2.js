@@ -134,7 +134,7 @@ class SceneTwo extends Phaser.Scene{
          this.time.addEvent({
             delay: 1000,
             callback: function() {
-               this.scene.start('SceneThree');
+               this.scene.start('SceneBetween34');
                this.physics.pause();
             },
             callbackScope: this,
