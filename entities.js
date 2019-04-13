@@ -55,7 +55,7 @@ class Player extends Entity{
       let {x, y}= this.body;
       //If the player is almost at floor level, and there are no more than 2 ponds
       if(y > 420 && this.canCreatePond() && this.scene.ponds.getChildren().length <= this.maxNumberOfPonds()){
-         let pond = new Pond(this.scene,x,y+10,'pond');
+         let pond = new Pond(this.scene,x+40,y+10,'pond');
          this.scene.ponds.add(pond);
          this.setData('canCreatePond', false);
          this.scene.time.addEvent({
