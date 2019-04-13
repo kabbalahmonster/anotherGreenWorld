@@ -31,7 +31,7 @@ class SceneOne extends Phaser.Scene{
       this.add.image(100, config.height-90, 'pileLeft').depth = 30;
       this.add.image(config.width-100, config.height-140, 'pileRight').setScale(0.8).depth = 30;
 
-      backTrack= this.sound.add('track3',{loop:true/*, detune: -200*/});
+      backTrack= this.sound.add('track1',{loop:true/*, detune: -200*/});
       backTrack.play();
       
       stompFX = this.sound.add('stomp');
