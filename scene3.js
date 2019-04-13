@@ -31,7 +31,7 @@ class SceneThree extends Phaser.Scene{
       this.player.body.collideWorldBounds=true;
 
       stompFX = this.sound.add('stomp');
-      backTrack= this.sound.add('track2',{loop:true, detune: -500});
+      backTrack= this.sound.add('track3',{loop:true, detune: -500});
       backTrack.play();
       
       this.physics.add.collider(this.player, this.platforms);
