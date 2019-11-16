@@ -1,4 +1,3 @@
-
 class SceneMain extends Phaser.Scene{
    constructor() {
       super({key: 'SceneMain'});
@@ -32,6 +31,7 @@ class SceneMain extends Phaser.Scene{
       
       this.load.audio('win', 'assets/win.ogg');
       this.load.audio('intro', 'assets/intro.ogg');
+
    }
    create(){
       //player animations
@@ -47,16 +47,12 @@ class SceneMain extends Phaser.Scene{
       this.add.image(config.width/2, config.height/2, 'title');
 
       
-      backTrack = this.sound.add('intro',{loop:true/*, detune: -200*/});
-      backTrack.play(); 
-
-      
+      // backTrack = this.sound.add('intro',{loop:true/*, detune: -200*/});
+      // backTrack.play(); 
 
       this.time.addEvent({
          delay: 3000,
-         callback: function(){            
-            backTrack.stop();
-            // this.scene.start('SceneOne');
+         callback: function(){
             this.scene.start('SceneBetween12');
             // this.scene.start('SceneTwo');
             // this.scene.start('SceneThree');
