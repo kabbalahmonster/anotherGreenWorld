@@ -18,7 +18,7 @@ class SceneMain extends Phaser.Scene{
          {frameWidth: 106, frameHeight: 150}
       );
       this.load.spritesheet('robot2', 
-         'assets/badBot3.png',
+         'assets/badbot3.png',
          {frameWidth:90, frameHeight: 139}
       );
       this.load.audio('track1', 'assets/track1.ogg');
